@@ -1,24 +1,41 @@
 #include "Window.h"
 
-Window::WindowClass::WindowClass()
+Window::WindowClass Window::WindowClass::wndClass;
+
+Window::WindowClass::WindowClass() noexcept
+	:
+	hInst(GetModuleHandle( nullptr ))
 {
-	wc = { 0 };
+	WNDCLASSEX wc = { 0 };
 	wc.cbSize = sizeof(wc);
 	wc.style = CS_OWNDC;
+	wc.lpfnWndProc = HandleMsgSetup;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = GetInstance();
+	wc.hIcon = nullptr;
+	wc.hCursor = nullptr;
+	wc.hbrBackground = nullptr;
+	wc.lpszMenuName = nullptr;
+	wc.lpszClassName = GetName();
+	wc.hIconSm = nullptr;
 
+	RegisterClassEx(&wc);
 }
 
 Window::WindowClass::~WindowClass()
-{}
-
-HINSTANCE Window::WindowClass::GetInstance()
 {
-	return hInstance;
+	UnregisterClass(wndClassName, GetInstance());
 }
 
-const char * Window::WindowClass::GetName()
+HINSTANCE Window::WindowClass::GetInstance() noexcept
 {
-	return wc.lpszClassName;
+	return wndClass.hInst;
+}
+
+const char * Window::WindowClass::GetName() noexcept
+{
+	return wndClassName;
 }
 
 Window::Window(int width, int height, const char* name)
@@ -38,10 +55,72 @@ Window::Window(int width, int height, const char* name)
 	}
 
 	hWnd = CreateWindowExA(
-		"MyWindow", name,
+		0, Window::WindowClass::GetName(), name,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		wr.right - wr.left, wr.bottom - wr.top,
-		nullptr, nullptr, WindowClass.GetInstance(), nullptr);
+		nullptr, nullptr, Window::WindowClass::GetInstance(), this);
+
+	ShowWindow(hWnd, SW_SHOWDEFAULT);
+}
+
+Window::~Window()
+{}
+
+LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept 
+{
+	if (msg == WM_NCCREATE)
+	{
+		const CREATESTRUCT * const pCreate = reinterpret_cast<CREATESTRUCT *>(lparam); //the lparam of the WM_NCCREATE message is CREATESTRUCT that contain information about the window
+		Window* const pWnd = reinterpret_cast<Window*>(pCreate->lpCreateParams); //lpCreateParams is the lparam that we pass at the window creation (which was this so it is the window)
+		//We can store some data in the WinAPI userdata that we will use to acces HandleMessage
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
+		//We change de window proc to HandleMsgThunk now that we have setup the user data
+		SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk));
+		//now we pass it to the actual HandleMsg that we can acces with the window pointer
+		return pWnd->HandleMsg(hWnd, msg, wparam, lparam);
+	} 
+	
+	return DefWindowProc(hWnd, msg, wparam, lparam);
+}
+
+LRESULT CALLBACK Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept
+{
+	Window* const pWnd = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	return pWnd->HandleMsg(hWnd, msg, wparam, lparam);
+}
+
+LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept
+{
+	switch (msg)
+	{
+		case WM_CLOSE:
+			PostQuitMessage(0);
+			return 0;
+	}
+
+	return DefWindowProc(hWnd, msg, wparam, lparam);
+}
+
+std::optional<int> Window::ProcessMessages() noexcept
+{
+	MSG msg;
+	// while queue has messages, remove and dispatch them (but do not block on empty queue)
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		// check for quit because peekmessage does not signal this via return val
+		if (msg.message == WM_QUIT)
+		{
+			// return optional wrapping int (arg to PostQuitMessage is in wparam) signals quit
+			return (int)msg.wParam;
+		}
+
+		// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	// return empty optional when not quitting app
+	return {};
 }
 
