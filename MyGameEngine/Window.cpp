@@ -94,9 +94,20 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noe
 {
 	switch (msg)
 	{
+		//we don't want the DefProc to handle this message because
+		//we want our destructor to destroy the window 
 		case WM_CLOSE:
 			PostQuitMessage(0);
 			return 0;
+		case WM_KEYDOWN:
+			kbd.OnKeyPressed(wparam);
+			break;
+		case WM_KEYUP:
+			kbd.OnKeyReleased(wparam);
+			break;
+		case WM_CHAR:
+			kbd.OnChar(wparam);
+			break;
 	}
 
 	return DefWindowProc(hWnd, msg, wparam, lparam);
