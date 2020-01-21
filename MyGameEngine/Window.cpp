@@ -99,6 +99,8 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noe
 		case WM_CLOSE:
 			PostQuitMessage(0);
 			return 0;
+		case WM_KILLFOCUS: //if we don't, when we loose the focus and a key is pressed, it will remain pressed
+			kbd.ClearState();
 		case WM_KEYDOWN:
 			kbd.OnKeyPressed(wparam);
 			break;
