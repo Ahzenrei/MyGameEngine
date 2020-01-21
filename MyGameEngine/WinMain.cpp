@@ -13,5 +13,6 @@ int CALLBACK WinMain(
 	catch (const std::exception& e)
 	{
 		MessageBox(nullptr,e.what(), "Standard exception", MB_OK | MB_ICONEXCLAMATION);
+		return 1;
 	}
 }
