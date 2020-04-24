@@ -1,6 +1,7 @@
 #pragma once
 #include "Windows.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 #include <exception>
 #include <optional>
 
@@ -48,6 +49,7 @@ private:
 	LRESULT HandleMsg (HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept;
 public:
 	Keyboard kbd;
+	Mouse mouse;
 private:
 	int width;
 	int height;

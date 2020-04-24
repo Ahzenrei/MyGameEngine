@@ -110,6 +110,49 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noe
 		case WM_CHAR:
 			kbd.OnChar(wparam);
 			break;
+		case WM_MOUSEMOVE:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			mouse.OnMouseMove(pt.x, pt.y);
+			break;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			mouse.OnLeftPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			mouse.OnLeftReleased(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			mouse.OnRightPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONUP:
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			mouse.OnRightReleased(pt.x, pt.y);
+			break;
+		}
+		case WM_MOUSEWHEEL :
+		{
+			const POINTS pt = MAKEPOINTS(lparam);
+			if (GET_WHEEL_DELTA_WPARAM(wparam) > 0)
+			{
+				mouse.OnWheelUp(pt.x, pt.y);
+			}
+			else if (GET_WHEEL_DELTA_WPARAM(wparam) < 0)
+			{
+				mouse.OnWheelDown(pt.x, pt.y);
+			}
+			break;
+		}
 	}
 
 	return DefWindowProc(hWnd, msg, wparam, lparam);
