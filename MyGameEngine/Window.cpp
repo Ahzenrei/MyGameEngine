@@ -68,6 +68,8 @@ Window::Window(int width, int height, const char* name)
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+
+	pGfx = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
@@ -189,6 +191,11 @@ std::optional<int> Window::ProcessMessages() noexcept
 void Window::SetTitle(std::string title) const noexcept
 {
 	SetWindowTextA(hWnd, title.c_str());
+}
+
+Graphics& Window::Gfx()
+{
+	return *pGfx;
 }
 
 Window::Exception::Exception(int line, const char* file, HRESULT hr) noexcept

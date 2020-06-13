@@ -26,5 +26,6 @@ int App::Go()
 
 void App::DoFrame()
 {
-
+	wnd.Gfx().ClearBuffer(0,0,0);
+	wnd.Gfx().EndFrame();
 }
