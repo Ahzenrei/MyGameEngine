@@ -195,6 +195,10 @@ void Window::SetTitle(std::string title) const noexcept
 
 Graphics& Window::Gfx()
 {
+	if (!pGfx)
+	{
+		throw std::exception ("pGfx is null");
+	}
 	return *pGfx;
 }
 
@@ -208,8 +212,8 @@ const char* Window::Exception::what() const noexcept
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
-		<< "[Error code] " << GetErrorCode()
-		<< "[Description] " << GetErrorString()
+		<< "[Error code] " << GetErrorCode() << std::endl
+		<< "[Description] " << GetErrorString() << std::endl
 		<< GetOriginString();
 	whatBuffer = oss.str();
 	return whatBuffer.c_str();
@@ -217,7 +221,7 @@ const char* Window::Exception::what() const noexcept
 
 const char* Window::Exception::GetType() const noexcept
 {
-	return "My Windows Exception";
+	return "Windows exception";
 }
 
 std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept

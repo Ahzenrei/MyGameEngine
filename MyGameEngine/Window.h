@@ -4,6 +4,7 @@
 #include "Mouse.h"
 #include "MyException.h"
 #include "Graphics.h"
+#include "WindowsThrowMacros.h"
 #include <optional>
 #include <memory>
 
@@ -60,6 +61,3 @@ private:
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
 };
-
-#define WND_EXCEPT(hr) Window::Exception( __LINE__,__FILE__, hr)
-#define WND_LAST_EXCEPT() Window::Exception(__LINE__, __FILE__, GetLastError())
