@@ -49,31 +49,14 @@ Graphics::Graphics(HWND hWnd)
 		&pContext
 	) );
 
-	ID3D11Resource* pBackBuffer = nullptr;
-	GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&pBackBuffer)));
+	Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer = nullptr;
+	GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
 
 	GFX_THROW_INFO(pDevice->CreateRenderTargetView(
-		pBackBuffer,
+		pBackBuffer.Get(),
 		nullptr,
 		&pTarget
 	));
-	pBackBuffer->Release();
-}
-
-Graphics::~Graphics()
-{
-	if (pDevice != nullptr)
-	{
-		pDevice->Release();
-	}
-	if (pContext != nullptr)
-	{
-		pContext->Release();
-	}
-	if (pSwap != nullptr)
-	{
-		pSwap->Release();
-	}
 }
 
 void Graphics::EndFrame()
@@ -99,7 +82,7 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 {
 	const FLOAT color[4] = { red, green, blue, 0 };
 	pContext->ClearRenderTargetView(
-		pTarget,
+		pTarget.Get(),
 		color
 	);
 }
