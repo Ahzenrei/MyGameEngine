@@ -100,6 +100,6 @@ private:
 	std::queue<Event> buffer;
 	bool leftIsPressed = false;
 	bool rightIsPressed = false;
-	int x;
-	int y;
+	int x = -1;
+	int y = -1;
 };

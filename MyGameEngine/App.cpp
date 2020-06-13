@@ -1,4 +1,6 @@
 #include "App.h"
+#include <sstream>
+#include <iomanip>
 
 App::App()
 	:
@@ -18,5 +20,11 @@ int App::Go()
 			// if return optional has value, means we're quitting so return exit code
 			return *ecode;
 		}
+		DoFrame();
 	}
+}
+
+void App::DoFrame()
+{
+
 }

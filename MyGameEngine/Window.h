@@ -2,24 +2,24 @@
 #include "Windows.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-#include <exception>
+#include "MyException.h"
 #include <optional>
+
 
 class Window
 {
 public:
-	class Exception : public std::exception
+	class Exception : public MyException
 	{
 	public :
-		Exception(const char * str)
-			:
-			buffer(str)
-		{}
-		const char * what() const throw () {
-			return buffer;
-		}
-	private:
-		const char * buffer;
+		Exception(int line, const char* file, HRESULT hr) noexcept;
+		const char* what() const noexcept override;
+		const char* GetType() const noexcept override;
+		static std::string TranslateErrorCode( HRESULT hr) noexcept;
+		HRESULT GetErrorCode() const noexcept;
+		std::string GetErrorString() const noexcept;
+	private :
+		HRESULT hr;
 	};
 private:
 	//singleton
@@ -43,6 +43,7 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	static std::optional<int> ProcessMessages() noexcept;
+	void SetTitle(std::string title) const noexcept;
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept;
@@ -56,3 +57,5 @@ private:
 	HWND hWnd;
 };
 
+#define WND_EXCEPT(hr) Window::Exception( __LINE__,__FILE__, hr)
+#define WND_LAST_EXCEPT() Window::Exception(__LINE__, __FILE__, GetLastError())
