@@ -73,7 +73,9 @@ Window::Window(int width, int height, const char* name)
 }
 
 Window::~Window()
-{}
+{
+	DestroyWindow(hWnd);
+}
 
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noexcept 
 {
