@@ -26,7 +26,12 @@ int App::Go()
 
 void App::DoFrame()
 {
-	wnd.Gfx().ClearBuffer(0,0,0);
-	wnd.Gfx().DrawTestTriangle();
+	wnd.Gfx().ClearBuffer(1,1,1);
+	wnd.Gfx().DrawTestTriangle(-timer.Peek(),
+		0.0f,
+		0.0f);
+	wnd.Gfx().DrawTestTriangle(timer.Peek(), 
+		(float)wnd.mouse.GetPosX() / 400.0f - 1.0f,
+		-((float)wnd.mouse.GetPosY() / 300.0f - 1.0f));
 	wnd.Gfx().EndFrame();
 }
