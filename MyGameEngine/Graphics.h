@@ -1,11 +1,16 @@
 #pragma once
+#include "MyException.h"
 #include <d3d11.h>
 #include <wrl.h>
-#include "MyException.h"
 #include "DxgiInfoManager.h"
+#include "d3dcompiler.h"
+#include <DirectXMath.h>
+#include <memory>
+#include <random>
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	class Exception : public MyException
 	{
@@ -44,8 +49,11 @@ public:
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue) noexcept;
-	void DrawTestTriangle(float angle, float x, float y);
+	void DrawIndexed(UINT count);
+	void SetProjection(DirectX::XMMATRIX matrix);
+	DirectX::XMMATRIX GetProjection() const noexcept;
 private:
+	DirectX::XMMATRIX projection;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif

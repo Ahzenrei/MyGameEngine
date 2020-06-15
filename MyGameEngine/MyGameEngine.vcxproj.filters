@@ -16,6 +16,21 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{89efc901-3316-48d8-84db-7a5ad37bf09b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Bindable">
+      <UniqueIdentifier>{3a230ffa-9443-4d31-aa95-20cf03bb796e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Drawable">
+      <UniqueIdentifier>{640d1281-cd46-4013-9cf7-1c995df0c6b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Macros">
+      <UniqueIdentifier>{9c34001c-ff7f-46cd-93a7-7e5446f7d745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Bindable">
+      <UniqueIdentifier>{21f25075-7a55-4f80-a979-232b19ffb18a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Drawable">
+      <UniqueIdentifier>{d36494bf-a785-4215-b8c3-fcd74d35e9e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -44,6 +59,36 @@
     </ClCompile>
     <ClCompile Include="DxgiInfoManager.cpp">
       <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Topology.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Fichiers sources\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Fichiers sources\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformCbuf.cpp">
+      <Filter>Fichiers sources\Bindable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +119,47 @@
     <ClInclude Include="DxgiInfoManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="WindowsThrowMacros.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsThrowMacros.h">
+      <Filter>Fichiers d%27en-tête\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Topology.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Fichiers d%27en-tête\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Fichiers d%27en-tête\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="BindableBase.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformCbuf.h">
+      <Filter>Fichiers d%27en-tête\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
