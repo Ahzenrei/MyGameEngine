@@ -161,6 +161,9 @@
     <ClInclude Include="TransformCbuf.h">
       <Filter>Fichiers d%27en-tête\Bindable</Filter>
     </ClInclude>
+    <ClInclude Include="DrawableBase.h">
+      <Filter>Fichiers d%27en-tête\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyGameEngine.rc">
