@@ -31,6 +31,9 @@
     <Filter Include="Fichiers sources\Drawable">
       <UniqueIdentifier>{d36494bf-a785-4215-b8c3-fcd74d35e9e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Geometry">
+      <UniqueIdentifier>{8d6a8528-b791-4686-8039-b780652c6b4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="TransformCbuf.cpp">
       <Filter>Fichiers sources\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Melon.cpp">
+      <Filter>Fichiers sources\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +170,18 @@
     <ClInclude Include="DrawableBase.h">
       <Filter>Fichiers d%27en-tête\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="IndexedTriangleList.h">
+      <Filter>Fichiers d%27en-tête\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Fichiers d%27en-tête\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Fichiers d%27en-tête\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Melon.h">
+      <Filter>Fichiers d%27en-tête\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyGameEngine.rc">
@@ -171,10 +189,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
+    <FxCompile Include="ColorIndexPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
+    <FxCompile Include="ColorIndexVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
