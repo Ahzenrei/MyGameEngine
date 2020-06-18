@@ -13,6 +13,7 @@ private:
 	void DoFrame();
 private:
 	ImguiManager imgui;
+	float speed_factor = 1.0f;
 	Window wnd;
 	Timer timer;
 	std::vector<std::unique_ptr<class Drawable>> drawables;

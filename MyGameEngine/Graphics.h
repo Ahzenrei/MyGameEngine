@@ -48,11 +48,15 @@ public:
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
 	void EndFrame();
-	void ClearBuffer(float red, float green, float blue) noexcept;
+	void BeginFrame(float red, float green, float blue) noexcept;
 	void DrawIndexed(UINT count);
 	void SetProjection(DirectX::XMMATRIX matrix);
 	DirectX::XMMATRIX GetProjection() const noexcept;
+	bool IsImguiEnabled() const noexcept;
+	void EnableImgui() noexcept;
+	void DisableImgui() noexcept;
 private:
+	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
