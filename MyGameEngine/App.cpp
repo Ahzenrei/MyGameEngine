@@ -5,6 +5,9 @@
 #include "Box.h"
 #include <memory>
 #include <math.h>
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
 
 App::App()
 	:
@@ -75,6 +78,7 @@ int App::Go()
 
 void App::DoFrame()
 {
+
 	auto dt = timer.Mark();
 	wnd.Gfx().ClearBuffer(0.07,0,0.12);
 	for (auto& d : drawables)
@@ -82,5 +86,18 @@ void App::DoFrame()
 		d->Update(dt);
 		d->Draw(wnd.Gfx());
 	}
+
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	static bool show_demo_window = true;
+	if (show_demo_window)
+	{
+		ImGui::ShowDemoWindow(&show_demo_window);
+	}
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
 	wnd.Gfx().EndFrame();
 }

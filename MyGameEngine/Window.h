@@ -4,7 +4,6 @@
 #include "Mouse.h"
 #include "MyException.h"
 #include "Graphics.h"
-#include "WindowsThrowMacros.h"
 #include <optional>
 #include <memory>
 
