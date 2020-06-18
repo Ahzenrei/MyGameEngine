@@ -52,12 +52,15 @@ public:
 	void DrawIndexed(UINT count);
 	void SetProjection(DirectX::XMMATRIX matrix);
 	DirectX::XMMATRIX GetProjection() const noexcept;
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 	bool IsImguiEnabled() const noexcept;
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
 private:
-	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;
+	DirectX::XMMATRIX camera;
+	bool imguiEnabled = true;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif

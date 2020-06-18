@@ -112,6 +112,9 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noe
 	{
 		return true;
 	}
+
+	const auto imio = ImGui::GetIO();
+
 	switch (msg)
 	{
 		//we don't want the DefProc to handle this message because
@@ -122,55 +125,111 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam) noe
 		case WM_KILLFOCUS: //if we don't, when we loose the focus and a key is pressed, it will remain pressed
 			kbd.ClearState();
 		case WM_KEYDOWN:
-			kbd.OnKeyPressed(wparam);
-			break;
+		case WM_SYSKEYDOWN:
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
+			if (!(lparam & 0x40000000) || kbd.AutorepeatIsEnabled()) // (lparam & 0x40000000) is true when the previous key state was down, so we are autorepeating
+			{
+				kbd.OnKeyPressed(static_cast<unsigned char>(wparam));
+			}
 		case WM_KEYUP:
+		case WM_SYSKEYUP:
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			kbd.OnKeyReleased(wparam);
 			break;
 		case WM_CHAR:
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			kbd.OnChar(wparam);
 			break;
 		case WM_MOUSEMOVE:
 		{
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
-			mouse.OnMouseMove(pt.x, pt.y);
+			//in window
+			if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
+			{
+				mouse.OnMouseMove(pt.x, pt.y);
+				if (!mouse.IsInWindow())
+				{
+					SetCapture(hWnd);
+					mouse.OnMouseEnter();
+				}
+			}
+			//not in window maintain capture if hold button down, else we release
+			else
+			{
+				if (wparam & (MK_LBUTTON | MK_RBUTTON))
+				{
+					mouse.OnMouseMove(pt.x, pt.y);
+				}
+				else
+				{
+					ReleaseCapture();
+					mouse.OnMouseLeave();
+				}
+			}
 			break;
 		}
 		case WM_LBUTTONDOWN:
 		{
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
 			mouse.OnLeftPressed(pt.x, pt.y);
 			break;
 		}
 		case WM_LBUTTONUP:
 		{
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
 			mouse.OnLeftReleased(pt.x, pt.y);
 			break;
 		}
 		case WM_RBUTTONDOWN:
 		{
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
 			mouse.OnRightPressed(pt.x, pt.y);
 			break;
 		}
 		case WM_RBUTTONUP:
 		{
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
 			mouse.OnRightReleased(pt.x, pt.y);
 			break;
 		}
 		case WM_MOUSEWHEEL :
 		{
+			if (imio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lparam);
-			if (GET_WHEEL_DELTA_WPARAM(wparam) > 0)
-			{
-				mouse.OnWheelUp(pt.x, pt.y);
-			}
-			else if (GET_WHEEL_DELTA_WPARAM(wparam) < 0)
-			{
-				mouse.OnWheelDown(pt.x, pt.y);
-			}
+			const int delta = GET_WHEEL_DELTA_WPARAM(wparam);
+			mouse.OnWheelDelta(pt.x, pt.y, delta);
 			break;
 		}
 	}

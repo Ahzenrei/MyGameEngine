@@ -80,11 +80,15 @@ void App::DoFrame()
 	auto dt = timer.Mark() * speed_factor;
 
 	wnd.Gfx().BeginFrame(0.07,0,0.12);
+	wnd.Gfx().SetCamera(cam.GetMatrix());
+
 	for (auto& d : drawables)
 	{
 		d->Update(dt);
 		d->Draw(wnd.Gfx());
 	}
+
+	static float position[3];
 
 	if (ImGui::Begin("Simulation Speed"))
 	{
@@ -92,6 +96,8 @@ void App::DoFrame()
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.f/ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 	ImGui::End();
+
+	cam.SpawnControlWindow();
 
 	wnd.Gfx().EndFrame();
 }
