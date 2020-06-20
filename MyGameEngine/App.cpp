@@ -1,7 +1,6 @@
 #define _USE_MATH_DEFINES
 
 #include "App.h"
-#include "Melon.h"
 #include "Box.h"
 #include <memory>
 #include <math.h>
@@ -9,7 +8,8 @@
 
 App::App()
 	:
-	wnd(800, 600, "My Windows")
+	wnd(1600, 900, "My Windows"),
+	light(wnd.Gfx())
 {
 	class Factory
 	{
@@ -27,11 +27,6 @@ App::App()
 					gfx, rng, adist, ddist,
 					odist, rdist, bdist
 					);
-			case 1:
-				return std::make_unique<Melon>(
-					gfx, rng, adist, ddist,
-					odist, rdist, longdist, latdist
-					);
 			default:
 				assert(false && "bad drawable type in factory");
 				return {};
@@ -39,6 +34,7 @@ App::App()
 		}
 	private:
 		Graphics& gfx;
+
 		std::mt19937 rng{ std::random_device{}() };
 		std::uniform_real_distribution<float> adist{ 0.0f,M_PI * 2.0f };
 		std::uniform_real_distribution<float> ddist{ 0.0f,M_PI * 0.5f };
@@ -47,7 +43,7 @@ App::App()
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
 		std::uniform_int_distribution<int> latdist{ 5,20 };
 		std::uniform_int_distribution<int> longdist{ 10,40 };
-		std::uniform_int_distribution<int> typedist{ 0,1 };
+		std::uniform_int_distribution<int> typedist{ 0,0 };
 	};
 
 	Factory f(wnd.Gfx());
@@ -81,12 +77,14 @@ void App::DoFrame()
 
 	wnd.Gfx().BeginFrame(0.07,0,0.12);
 	wnd.Gfx().SetCamera(cam.GetMatrix());
+	light.Bind(wnd.Gfx());
 
 	for (auto& d : drawables)
 	{
 		d->Update(dt);
 		d->Draw(wnd.Gfx());
 	}
+	light.Draw(wnd.Gfx());
 
 	static float position[3];
 
@@ -98,6 +96,7 @@ void App::DoFrame()
 	ImGui::End();
 
 	cam.SpawnControlWindow();
+	light.SpawnControlWindow();
 
 	wnd.Gfx().EndFrame();
 }
